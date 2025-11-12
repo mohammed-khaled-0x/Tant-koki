@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>طنط كوكي — اللحوم والمجمدات</title>
+  <meta name="theme-color" content="#d40000">
+  <style>
+    :root{
+      --brand:#d40000; --brand-d:#b60000;
+      --ink:#0b0f19; --bg:#fff7f7; --plate:#0d0d0f;
+      --muted:#70757d; --card:#ffffff; --border:#f0c4c4;
+      --ok:#16a34a; --warn:#f59e0b; --danger:#dc2626;
+      --radius:18px; --shadow:0 6px 24px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--ink);
+      font-family:'Cairo',system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
+
+    .topbar{position:sticky;top:0;z-index:20;background:var(--brand);color:#fff}
+    .topbar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 14px}
+    .logo img{height:46px;width:46;border-radius:50%}
+    .brand{font-size:20px;font-weight:900;letter-spacing:.3px;white-space:nowrap}
+    .spacer{flex:1}
+    .btn{background:#fff;color:var(--brand);padding:10px 14px;border-radius:999px;border:none;font-weight:800;cursor:pointer;box-shadow:var(--shadow)}
+    .btn:hover{background:#fff1f1}
+    .ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6)}
+
+    .hero{background:radial-gradient(1200px 400px at 100% 0%, rgba(255,255,255,.16), transparent 60%), var(--brand);color:#fff}
+    .pattern{background-image: var(--pattern-url);background-repeat:repeat;background-size:280px auto;opacity:.3;position:absolute;inset:0;pointer-events:none}
+    .hero-wrap{max-width:1200px;margin:0 auto;position:relative;padding:22px 14px 16px}
+    .hero h1{margin:0 0 6px;font-size:28px}
+    .hero p{margin:0;color:#ffecec}
+    .hero-badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+    .chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);color:#fff;padding:6px 10px;border-radius:999px;font-size:13px}
+
+    .toolbar{background:#fff;box-shadow:var(--shadow);border-radius:var(--radius);padding:12px;display:grid;gap:10px;
+      grid-template-columns:1.1fr .7fr .7fr .5fr .5fr .5fr auto;align-items:center;margin:14px auto 10px;max-width:1200px}
+    .search{padding:12px 14px;border:1px solid var(--border);border-radius:12px;outline:none}
+    .select,.input{padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:#fff}
+    .switch{display:flex;align-items:center;gap:8px;font-size:14px}
+    .switch input{accent-color:var(--brand);width:18px;height:18px}
+    .reload{background:var(--brand);color:#fff;padding:10px 14px;border:none;border-radius:12px;font-weight:800;cursor:pointer}
+    .reload:hover{background:var(--brand-d)}
+    @media (max-width:980px){ .toolbar{grid-template-columns:1fr 1fr 1fr 1fr} .hide-md{display:none} }
+    @media (max-width:560px){ .toolbar{grid-template-columns:1fr 1fr} }
+
+    .wrap{max-width:1200px;margin:0 auto;padding:0 14px 70px}
+    .stats{color:var(--muted);margin:10px 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(230px,1fr));gap:14px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px;position:relative;overflow:hidden}
+    .plate{width:100%;aspect-ratio:1;border-radius:18px;background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,.08), transparent 20%),
+        radial-gradient(120px 120px at 70% 70%, rgba(255,255,255,.06), transparent 40%),
+        var(--plate);
+      display:flex;align-items:center;justify-content:center;margin-bottom:10px;position:relative;overflow:hidden}
+    .plate img{width:100%;height:100%;object-fit:cover;border-radius:12px}
+    .badge{position:absolute;top:8px;inset-inline-start:8px;background:#fff;color:var(--brand);border:1px solid var(--border);
+      padding:5px 8px;border-radius:999px;font-size:12px;font-weight:800}
+    .badge.oos{color:#fff;background:var(--danger);border-color:#7f1d1d}
+    .badge.new{background:var(--warn);color:#111;border-color:#b45309}
+    .name{font-weight:900;margin:2px 0 4px;font-size:16px}
+    .desc{color:var(--muted);font-size:13px;min-height:34px}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:10px}
+    .price{font-size:18px;font-weight:900}
+    .old{color:#9aa1a9;text-decoration:line-through;font-weight:600;font-size:13px;margin-inline-start:8px}
+    .brandTag{font-size:12px;background:#fff2f2;color:#7a0a0a;border:1px solid var(--border);padding:4px 8px;border-radius:999px}
+    .actions{display:flex;gap:8px;margin-top:10px}
+    .whats{flex:1;background:var(--brand);color:#fff;border:none;border-radius:12px;padding:10px 12px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;display:inline-block}
+    .whats:hover{background:var(--brand-d)}
+    .empty{padding:28px;text-align:center;color:var(--muted);border:2px dashed var(--border);border-radius:16px;background:#fff}
+    .footer{margin-top:16px;color:var(--muted);font-size:13px}
+    .hr{height:1px;background:linear-gradient(90deg,transparent, var(--border), transparent);margin:14px 0}
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- تبديل الأصول (Assets):
+       - غير قيم ASSETS تحت: LOGO_URL, PATTERN_URL, WHATSAPP_PHONE, CALL_PHONE
+       - غير CSV_URL في آخر السكربت برابط Google Sheets CSV -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="logo"><img id="logo" alt="شعار طنط كوكي"></div>
+      <div class="brand">طنط كوكي — اللحوم والمجمدات</div>
+      <div class="spacer"></div>
+      <div class="cta">
+        <a id="tel" class="btn ghost" href="#">اتصال</a>
+        <a id="wa" class="btn" target="_blank" rel="noopener">واتساب</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="pattern" aria-hidden="true"></div>
+    <div class="hero-wrap">
+      <h1>كل اللي تحتاجيه من لحوم ومجمّدات… في مكان واحد.</h1>
+      <p>قائمة سريعة وبسيطة — بحث وفلاتر بالعربي، وعروض مميزة تظهر تلقائيًا.</p>
+      <div class="hero-badges">
+        <span class="chip">عروض</span>
+        <span class="chip">أفضل أسعار</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="toolbar" role="region" aria-label="أدوات البحث">
+      <input id="q" class="search" type="search" placeholder="ابحث بالاسم أو الوصف أو العلامات…">
+      <select id="cat" class="select"><option value="">كل التصنيفات</option></select>
+      <select id="brand" class="select"><option value="">كل الشركات</option></select>
+      <input id="min" class="input hide-md" type="number" inputmode="numeric" placeholder="أقل سعر">
+      <input id="max" class="input hide-md" type="number" inputmode="numeric" placeholder="أعلى سعر">
+      <label class="switch"><input id="offersOnly" type="checkbox"> العروض فقط</label>
+      <label class="switch"><input id="onlyAvailable" type="checkbox" checked> المتوفر فقط</label>
+      <button id="reload" class="reload">تحديث ↻</button>
+    </div>
+
+    <div class="stats" id="stats">—</div>
+
+    <div id="grid" class="grid" aria-live="polite"></div>
+    <div id="empty" class="empty" style="display:none">مفيش نتائج مطابقة. جرّب كلمات أقل أو شيل بعض الفلاتر.</div>
+
+    <div class="footer">
+      آخر تحديث: <span id="lastUpdated">—</span>
+      <div class="hr"></div>
+      نورتونا ♥
+    </div>
+  </div>
+
+  <script>
+    const ASSETS = {
+      LOGO_URL: "./logo.jpg",
+      PATTERN_URL: "./pattern.svg",
+      WHATSAPP_PHONE: "201551846461", // مثال: 201551846461
+      CALL_PHONE: "01060682224"
+    };
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRBz_5SuMZ0KwWDN5v_gLCo-RuRonyc0oW__QkWeTQPUjP-AG1vZVt_FHF9_trMYxIT6LdE-765_aV8/pub?output=csv";
+    const SAMPLE_CSV = `id,name,category,company,unit,price,sale_price,in_stock,image_url,description,tags,weight_g,sku,barcode,is_featured,is_new,updated_at
+1001,كبدة بلدي,لحوم طازجة,بلدي,كجم,380,,TRUE,,طازجة يوميًا,"كبدة|بلدي",1000,KBD-01,,TRUE,TRUE,2025-11-05
+1002,لحمة مفرومة ممتاز,لحوم طازجة,مفروم,كجم,420,390,TRUE,,مفرومة جاهزة,"مفروم|لحمة",1000,LMF-02,,TRUE,FALSE,2025-11-04
+1003,بانيه فراخ,دواجن,شركات,كجم,230,199,TRUE,,صدور متبلة,"فراخ|بانيه|عرض",1000,BAN-33,,FALSE,TRUE,2025-11-06
+1004,جمبري جامبو,أسماك ومأكولات بحرية,استيراد,كجم,680,,FALSE,,جامبو نظيف,"جمبري|بحري",1000,GMB-77,,FALSE,FALSE,2025-11-02
+1005,برجر لحم 100%,مجمدات,شركات,كرتونة,175,150,TRUE,,برجر لذيذ,"برجر|سريع|عرض",700,BRG-12,,FALSE,TRUE,2025-11-01
+1006,بيض أحمر طازج,بقالة باردة,مزارع,طبق,120,,TRUE,,طازج,"بيض",1500,EGG-10,,FALSE,FALSE,2025-10-30`;
+
+    // تطبيق الهوية
+    document.getElementById("logo").src = ASSETS.LOGO_URL;
+    document.documentElement.style.setProperty("--pattern-url", `url('${ASSETS.PATTERN_URL}')`);
+    document.getElementById("tel").href = `tel:${ASSETS.CALL_PHONE}`;
+    document.getElementById("wa").href = `https://wa.me/${ASSETS.WHATSAPP_PHONE}`;
+
+    const el = id => document.getElementById(id);
+    const unique = a => [...new Set(a)].filter(Boolean);
+    const parseBool = v => (v ?? "").toString().trim().toLowerCase() === "true";
+    function formatPrice(n){ if(n==null||isNaN(n)) return ""; return new Intl.NumberFormat('ar-EG',{maximumFractionDigits:2}).format(n)+" ج.م" }
+    function escapeHtml(s){ return (s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])) }
+
+    function csvToObjects(csv){
+      const rows=[]; let field="",row=[],q=false;
+      const pushF=()=>{row.push(field); field=""}; const pushR=()=>{rows.push(row); row=[]};
+      for(const c of csv){ if(c=='"'){q=!q} else if(c==','&&!q){pushF()} else if(c=='\n'&&!q){pushF();pushR()} else {field+=c} }
+      if(field||row.length){pushF();pushR()}
+      const headers=(rows.shift()||[]).map(h=>h.trim());
+      return rows.filter(r=>r.some(x=>(x||"").trim()!=="")).map(r=>{
+        const o={}; headers.forEach((h,i)=>o[h]=(r[i]??"").trim());
+        o.price=o.price?Number(o.price):null; o.sale_price=o.sale_price?Number(o.sale_price):null;
+        o.in_stock=parseBool(o.in_stock); o.is_featured=parseBool(o.is_featured); o.is_new=parseBool(o.is_new);
+        o.tags=(o.tags||"").split("|").map(s=>s.trim()).filter(Boolean);
+        return o;
+      })
+    }
+    const hasOffer = p => p.sale_price && p.price && p.sale_price < p.price;
+    const waLink = p => `https://wa.me/${ASSETS.WHATSAPP_PHONE}?text=${encodeURIComponent(`السلام عليكم، عايز ${p.name} (${p.unit||""}) بسعر ${hasOffer(p)?p.sale_price:p.price} ج.م`)}`;
+
+    function buildFilters(items){
+      el("cat").innerHTML = '<option value="">كل التصنيفات</option>' + unique(items.map(i=>i.category)).map(c=>`<option>${escapeHtml(c)}</option>`).join("");
+      el("brand").innerHTML = '<option value="">كل الشركات</option>' + unique(items.map(i=>i.company)).map(b=>`<option>${escapeHtml(b)}</option>`).join("");
+    }
+
+    function render(items){
+      const grid=el("grid"), empty=el("empty");
+      if(!items.length){ grid.innerHTML=""; empty.style.display="block"; return }
+      empty.style.display="none";
+      grid.innerHTML = items.map(p=>{
+        const badge = !p.in_stock ? '<div class="badge oos">نفدت</div>' : hasOffer(p) ? '<div class="badge">عرض</div>' : (p.is_new?'<div class="badge new">جديد</div>':'');
+        const price = hasOffer(p) ? `<span class="price">${formatPrice(p.sale_price)}</span><span class="old">${formatPrice(p.price)}</span>` : `<span class="price">${formatPrice(p.price)}</span>`;
+        const brand = p.company ? `<span class="brandTag">${escapeHtml(p.company)}</span>` : "";
+        const img = p.image_url ? `<img loading="lazy" src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}">` : "";
+        return `<article class="card">
+          <div class="plate">${badge}${img}</div>
+          <div class="name">${escapeHtml(p.name||"")}</div>
+          <div class="desc">${escapeHtml(p.description||"")}</div>
+          <div class="row"><div>${price}</div><div>${brand}</div></div>
+          <div class="actions"><a class="whats" href="${waLink(p)}" target="_blank" rel="noopener">اطلب على واتساب</a></div>
+        </article>`
+      }).join("");
+    }
+
+    function applyFilters(all){
+      const q = el("q").value.toLowerCase().trim();
+      const cat = el("cat").value;
+      const brand = el("brand").value;
+      const min = Number(el("min").value || 0);
+      const max = Number(el("max").value || 0);
+      const only = el("onlyAvailable").checked;
+      const offersOnly = el("offersOnly").checked;
+
+      let list = all.filter(p=>{
+        if(only && !p.in_stock) return false;
+        if(offersOnly && !hasOffer(p)) return false;
+        if(cat && p.category !== cat) return false;
+        if(brand && p.company !== brand) return false;
+        const price = hasOffer(p) ? p.sale_price : p.price;
+        if(min && price < min) return false;
+        if(max && price > max) return false;
+        const hay = (p.name+" "+(p.description||"")+" "+(p.tags||[]).join(" ")+" "+(p.company||"")).toLowerCase();
+        if(q && !hay.includes(q)) return false;
+        return true;
+      });
+
+      list.sort((a,b)=>{
+        if(a.in_stock !== b.in_stock) return a.in_stock ? -1 : 1;
+        if(hasOffer(a) !== hasOffer(b)) return hasOffer(a) ? -1 : 1;
+        if(a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
+        return (a.name||"").localeCompare(b.name||"", 'ar');
+      });
+
+      render(list);
+      el("stats").textContent = `عدد العناصر: ${list.length} • المتوفر: ${list.filter(x=>x.in_stock).length}`;
+    }
+
+    async function fetchCSVText(url){
+      const useSample = !url || url.includes("PLACEHOLDER");
+      if(useSample){ await new Promise(r=>setTimeout(r,50)); return SAMPLE_CSV; }
+      const res = await fetch(url, { cache:"no-store" });
+      if(!res.ok) throw new Error("تعذر تحميل CSV");
+      return await res.text();
+    }
+
+    async function boot(){
+      el("lastUpdated").textContent = "جارِ التحميل...";
+      try{
+        const csv = await fetchCSVText(CSV_URL);
+        const items = csvToObjects(csv);
+        window.__ALL__ = items;
+        buildFilters(items);
+        applyFilters(items);
+        el("lastUpdated").textContent = new Date().toLocaleString('ar-EG');
+      }catch(e){
+        console.error(e);
+        el("grid").innerHTML=""; el("empty").style.display="block";
+        el("lastUpdated").textContent = "حدث خطأ أثناء التحميل";
+      }
+    }
+    ["q","cat","brand","min","max","offersOnly","onlyAvailable"].forEach(id=>document.getElementById(id).addEventListener("input",()=>applyFilters(window.__ALL__||[])));
+    document.getElementById("reload").addEventListener("click", boot);
+    boot();
+  </script>
+</body>
+</html>
