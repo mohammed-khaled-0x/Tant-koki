@@ -300,11 +300,6 @@
     });
     el("clearSel").addEventListener("click", ()=>{ SEL.clear(); updateUI() });
 
-    const SAMPLE_CSV = `id,name,category,company,unit,price,sale_price,in_stock,image_url,description,tags,weight_g,sku,barcode,is_featured,is_new,updated_at
-1001,كبدة بلدي,لحوم طازجة,بلدي,كجم,380,,TRUE,,طازجة يوميًا,"كبدة|بلدي",1000,KBD-01,,TRUE,TRUE,2025-11-05
-1002,لحمة مفرومة ممتاز,لحوم طازجة,مفروم,كجم,420,390,TRUE,,مفرومة جاهزة,"مفروم|لحمة",1000,LMF-02,,TRUE,FALSE,2025-11-04
-1003,بانيه فراخ,دواجن,شركات,كجم,230,199,TRUE,,صدور متبلة,"فراخ|بانيه|عرض",1000,BAN-33,,FALSE,TRUE,2025-11-06`;
-
     async function fetchCSVText(url){
       const useSample = !url || url.includes("PLACEHOLDER");
       if(useSample){ await new Promise(r=>setTimeout(r,60)); return SAMPLE_CSV; }
