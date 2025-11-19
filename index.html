@@ -532,7 +532,7 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="logo"><img id="logo" alt="شعار طنط كوكي"></div>
+      <div class="logo"><img id="logo" alt="شعار طنط كوكي" loading="lazy"></div>
       <div class="brand">طنط كوكي — اللحوم والمجمدات</div>
       <div class="spacer"></div>
       <a id="tel" class="btn ghost" href="#">اتصال</a>
@@ -1017,7 +1017,7 @@
         const disabled = (!p.in_stock) ? "disabled" : "";
 
         return `<article class="card" data-reveal data-id="${escapeHtml(p._uid)}">
-          <img src="./logo-badge.png" class="logo-badge">
+          <img src="./logo-badge.png" class="logo-badge" loading="lazy">
           <div class="plate">${badge}${img}</div>
           <div class="name">${escapeHtml(p.name||"")}</div>
           ${descHtml}
